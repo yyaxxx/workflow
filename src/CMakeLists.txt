@@ -68,10 +68,10 @@ add_library(
 )
 
 if(ANDROID)
-	target_link_libraries(${SHARED_LIB_NAME} ssl crypto c)
+	target_link_libraries(${SHARED_LIB_NAME} crypto c)
 else()
-	target_link_libraries(${SHARED_LIB_NAME} OpenSSL::SSL OpenSSL::Crypto pthread)
-endif ()
+	target_link_libraries(${SHARED_LIB_NAME} OpenSSL::Crypto pthread)
+endif()
 
 set_target_properties(${STATIC_LIB_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 set_target_properties(${SHARED_LIB_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
@@ -91,7 +91,6 @@ if (KAFKA STREQUAL "y")
 		$<TARGET_OBJECTS:factory_kafka>
 	)
 	set_target_properties(${KAFKA_STATIC_LIB_NAME} PROPERTIES OUTPUT_NAME "wfkafka")
-
 	set(KAFKA_SHARED_LIB_NAME "wfkafka-shared")
 	add_library(
 		${KAFKA_SHARED_LIB_NAME} SHARED
