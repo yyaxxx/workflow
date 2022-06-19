@@ -756,7 +756,6 @@ protected:
 		if (this->callback)
 			this->callback(this);
 
-		this->first = NULL;
 		delete this;
 		return series->pop();
 	}
@@ -780,7 +779,7 @@ public:
 protected:
 	virtual ~WFModuleTask()
 	{
-		if (this->first)
+		if (!this->is_finished())
 			this->dismiss_recursive();
 	}
 };
