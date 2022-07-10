@@ -27,8 +27,8 @@
 #include "workflow/WFTaskFactory.h"
 #include "workflow/WFFacilities.h"
 
-#define REDIRECT_MAX    5
-#define RETRY_MAX       2
+#define REDIRECT_MAX    0
+#define RETRY_MAX       0
 
 void wget_callback(WFHttpTask *task)
 {
