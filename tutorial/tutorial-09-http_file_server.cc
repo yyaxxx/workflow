@@ -119,9 +119,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* Test the server. */
-	while (1)
-	{
-		WFFacilities::WaitGroup wg(1);
+	auto&& create = [&scheme, port](WFRepeaterTask *)->SubTask *{
 		char buf[1024];
 		*buf = '\0';
 		printf("Input file name: (Ctrl-D to exit): ");
@@ -129,12 +127,12 @@ int main(int argc, char *argv[])
 		if (*buf == '\0')
 		{
 			printf("\n");
-			break;
+			return NULL;
 		}
 
 		std::string url = "http://127.0.0.1:" + std::to_string(port) + "/" + buf;
 		WFHttpTask *task = WFTaskFactory::create_http_task(url, 0, 0,
-									[&wg](WFHttpTask *task) {
+									[](WFHttpTask *task) {
 			auto *resp = task->get_resp();
 			if (strcmp(resp->get_status_code(), "200") == 0)
 			{
@@ -146,13 +144,19 @@ int main(int argc, char *argv[])
 			{
 				printf("%s %s\n", resp->get_status_code(), resp->get_reason_phrase());
 			}
-
-			wg.done();
 		});
 
-		task->start();
-		wg.wait();
-	}
+		return task;
+	};
+
+	WFFacilities::WaitGroup wg(1);
+	WFRepeaterTask *repeater;
+	repeater = WFTaskFactory::create_repeater_task(create, [&wg](WFRepeaterTask *) {
+		wg.done();
+	});
+
+	repeater->start();
+	wg.wait();
 
 	server.stop();
 	return 0;
