@@ -49,16 +49,18 @@ private:
 };
 
 struct addrinfo ComplexDnsTask::hints =
-{
-	.ai_flags     = AI_NUMERICSERV | AI_NUMERICHOST,
-	.ai_family    = AF_UNSPEC,
-	.ai_socktype  = SOCK_STREAM,
-	.ai_protocol  = 0,
-	.ai_addrlen   = 0,
-	.ai_addr      = NULL,
-	.ai_canonname = NULL,
-	.ai_next      = NULL
-};
+[]() {
+    addrinfo _;
+    _.ai_flags = AI_NUMERICSERV | AI_NUMERICHOST;
+    _.ai_family = AF_UNSPEC;
+    _.ai_socktype = SOCK_STREAM;
+    _.ai_protocol = 0;
+    _.ai_addrlen = 0;
+    _.ai_addr = NULL;
+    _.ai_canonname = NULL;
+    _.ai_next = NULL;
+    return _;
+}();
 
 CommMessageOut *ComplexDnsTask::message_out()
 {

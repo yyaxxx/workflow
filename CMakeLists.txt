@@ -65,10 +65,10 @@ message("CMAKE_CXX_FLAGS_MINSIZEREL is ${CMAKE_CXX_FLAGS_MINSIZEREL}")
 
 if (WIN32)
 	set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   /MP /wd4200")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /wd4200 /std:c++14")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /wd4200 /std:c++17")
 else ()
 	set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wall -fPIC -pipe -std=gnu90")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fPIC -pipe -std=c++11 -fno-exceptions -Wno-invalid-offsetof")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fPIC -pipe -std=c++17 -fno-exceptions -Wno-invalid-offsetof")
 endif ()
 
 add_subdirectory(src)
@@ -97,7 +97,7 @@ configure_package_config_file(
 write_basic_package_version_file(
 	${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
 	VERSION ${WORKFLOW_VERSION}
-	COMPATIBILITY AnyNewerVersion 
+	COMPATIBILITY AnyNewerVersion
 )
 
 install(
